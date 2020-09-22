@@ -9,6 +9,7 @@ Practice using
  assertNotIn
 
 '''
+import unittest
 
 from studentlists import ClassList, StudentError
 from unittest import TestCase
@@ -43,11 +44,21 @@ class TestStudentLists(TestCase):
 
     ## TODO write a test that adds some example students, 
     # then removes a student not in the list, and asserts a StudentError is raised
+    def test_add_multiple_students_remove_ghost(self):
+        test_class = ClassList(2)
+        test_class.add_student('Test Student')
+        test_class.add_student('Test Student2')
+        test_class.add_student('Test Student3')
+        with self.assertRaises(StudentError):
+            test_class.remove_student('Test Student4')
 
 
     ## TODO write a test that removes a student from an 
     # empty list, and asserts a StudentError is raised
-
+    def test_remove_from_empty_list(self):
+        test_class = ClassList(2)
+        with self.assertRaises(StudentError):
+            test_class.remove_student('Test Student')
 
 
     def test_is_enrolled_when_student_present(self):
@@ -66,6 +77,13 @@ class TestStudentLists(TestCase):
     ## TODO write a test that adds some example students to a test class,
     ## then, call is_enrolled for a student who is not enrolled. 
     # Use assertFalse to verify is_enrolled returns False.
+
+    def test_is_not_enrolled(self):
+        test_class = ClassList(2)
+        test_class.add_student('Test Student')
+        test_class.add_student('Test Student2')
+        test_class.add_student('Test Student3')
+        self.assertFalse(test_class.is_enrolled('Test Student4'))
 
 
     def test_string_with_students_enrolled(self):
@@ -99,15 +117,40 @@ class TestStudentLists(TestCase):
     ## TODO write a test for index_of_student when the class_list list is empty.  
     # Assert index_of_student returns None for a student if the list is empty. 
     # use assertIsNone.
- 
+    def test_index_of_student(self):
+        test_class = ClassList(2)
+        self.assertIsNone(test_class.index_of_student(''))
+
+
  
     ## TODO write another test for index_of_student. In the case when the 
     # class_list is not empty but has some students.
     # assert that searching for a student name that is not in the list, returns None.
 
-   
+    def test_index_of_student_add(self):
+        test_class = ClassList(2)
+        test_class.add_student('Test Student')
+        test_class.add_student('Test Student2')
+        test_class.add_student('Test Student3')
+        self.assertIsNone(test_class.index_of_student('Test Student4'))
+
     ## TODO write a test for your new is_class_full method when the class is full. 
     # use assertTrue.
-    
+    def test_full_class(self):
+        test_class = ClassList(2)
+        test_class.add_student('Test Student')
+        test_class.add_student('Test Student2')
+        self.assertTrue(test_class.is_class_full())
     ## TODO write a test for your new is_class_full method for when is empty, 
     # and when it is not full. Use assertFalse.
+    def test_is_class_full_when_class_is_empty(self):
+        test_class = ClassList(3)
+        self.assertFalse(test_class.is_class_full())
+
+    def test_is_class_full_when_class_is_not_full(self):
+        test_class = ClassList(3)
+        test_class.add_student('Test Student')
+        self.assertFalse(test_class.is_class_full())
+#needed to run my tests
+if __name__ == '__main__':
+    unittest.main()

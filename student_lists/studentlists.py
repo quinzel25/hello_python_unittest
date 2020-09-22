@@ -13,10 +13,11 @@ class ClassList:
     """
 
     def __init__(self, max_students):
-
-        self.class_list = []
-        self.max_students = max_students
-
+        if max_students > 0 :
+            self.class_list = []
+            self.max_students = max_students
+        else:
+            raise StudentError('Error, zero or negative number detectedvv')
         # TODO raise an exception - StudentError - if max_students is zero or negative. 
         # Write test to confirm.
 
@@ -55,6 +56,13 @@ class ClassList:
     ## TODO add a method called is_class_full.
     # This should return True or False to indicate if the class is full.
 
+    def is_class_full(self):
+        
+        if len(self.class_list) >= self.max_students:
+            return True
+        else: 
+            return False
+
 
     def __str__(self):
         return ", ".join(self.class_list)
@@ -63,7 +71,7 @@ class ClassList:
 def main():
 
     ## Examples of using the program
-
+    
     capstone = ClassList(5)
     capstone.add_student('Anna')
     capstone.remove_student('Anna')
@@ -79,6 +87,8 @@ def main():
     capstone.add_student('David')
     capstone.add_student('Elliot')
     capstone.add_student('Flora')  # Shouldn't add
+
+    
 
     try:
         capstone.remove_student('Gus') # not present
